@@ -1,19 +1,19 @@
-# -*-coding:utf-8-*-
+# coding=utf-8
 import random
 import re
 
 import pytest
 
 from test_po.api.access import AccessApi
-from test_po.api.wework import Wework
+from test_po.api.wework import WeWork
 
 
 class TestWework:
     @pytest.fixture(scope="session")
     def token(self):
-        yield Wework().get_token()
+        yield WeWork().get_token()
 
-    def set_up(self):
+    def setup(self):
         self.access = AccessApi()
 
     # def test_creat_data(self):
@@ -22,18 +22,23 @@ class TestWework:
     #     return data
 
     def create_muti_data(self):
-        data = [("wu12345wu" + str(x), "zhangsan1", "138%08d" % x) for x in range(5)]
+        data = [("wu12345wu" + str(x), "zhangsan1", "138%08d" % x) for x in range(10)]
         return data
+
+    def test_get(self,token):
+        print(self.access.test_get_member("zhangsan", token))
+
+    def test_add(self, token):
+        print(self.access.test_add_member("waaaa", "zhangsi", "12345678901", token))
 
     @pytest.mark.parametrize("userid,name,mobile,", create_muti_data("xx"))
     def test_all(self, userid, name, mobile, token, department=None):
         try:
 
-            # 创建成员，对结果断言
+            #
             assert "created" == self.access.test_add_member(userid, name, mobile, token)['errmsg']
         except AssertionError as e:
             if "userid existed" in e.__str__():
-
                 self.access.test_delete(userid, token)
             if "mobile existed" in e.__str__():
                 # delete_userid = re.findall(":(.*)'$", e.__str__())
@@ -42,14 +47,14 @@ class TestWework:
                 print(delete_userid)
                 self.access.test_delete(delete_userid[0], token)
             assert "created" == self.access.test_add_member(userid, name, token, mobile)['errmsg']
-        # 查询成员信息，对结果进行断言
+        #
         print(name)
 
         assert name == self.access.test_get_member(userid, token)['name']
-        # # 更新一个成员
+        # #
         assert "updated" == self.access.test_update(userid, "wangwu", token)['errmsg']
         assert "wangwu" == self.access.test_get_member(userid, token)["name"]
-        # # 删除
+        # #
         assert "deleted" == self.access.test_delete(userid, token)["errmsg"]
-        # # 查询
+        # #
         assert 60111 == self.access.test_get_member(userid, token)["errcode"]

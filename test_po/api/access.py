@@ -1,11 +1,11 @@
-# -*-coding:utf-8-*-
+# coding=utf-8
 from test_po.api.baseapi import BaseApi
 
 
 class AccessApi(BaseApi):
 
     def test_add_member(self, userid, name, mobile, token, department=None):
-        print("执行添加成员")
+        print("执d")
 
         if department is None:
             department = [1]
@@ -24,7 +24,7 @@ class AccessApi(BaseApi):
         return res
 
     def test_get_member(self, userid, token):
-        print("执行获取成员")
+        print("add")
 
         data = {
             "method": "get",
@@ -40,7 +40,7 @@ class AccessApi(BaseApi):
         return res
 
     def test_update(self, userid, name, token):
-        print("执行更新成员")
+        print("update")
         data = {
             "method": "post",
             "url": f"https://qyapi.weixin.qq.com/cgi-bin/user/update?access_token={token}",
@@ -55,7 +55,7 @@ class AccessApi(BaseApi):
         return res
 
     def test_delete(self, userid, token):
-        print("执行删除成员")
+        print("gfg")
         data = {
             "method": "get",
             "url": f"https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token={token}&userid={userid}"
