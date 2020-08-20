@@ -3,6 +3,7 @@ import random
 import re
 
 import pytest
+from requests import Session
 
 from test_po.api.access import AccessApi
 from test_po.api.wework import WeWork
@@ -25,7 +26,7 @@ class TestWework:
         data = [("wu12345wu" + str(x), "zhangsan1", "138%08d" % x) for x in range(10)]
         return data
 
-    def test_get(self,token):
+    def test_get(self, token):
         print(self.access.test_get_member("zhangsan", token))
 
     def test_add(self, token):
@@ -58,3 +59,14 @@ class TestWework:
         assert "deleted" == self.access.test_delete(userid, token)["errmsg"]
         # #
         assert 60111 == self.access.test_get_member(userid, token)["errcode"]
+
+    def test_session(self, token):
+        s = Session()
+        s.params = {"params": token, }
+        data = {
+            "method": "get",
+            "url": "https://qyapi.weixin.qq.com/cgi-bin/user/get",
+            "params": {
+                "userid": "zhangsan68",
+            }}
+        print(s.request(**data).json())
