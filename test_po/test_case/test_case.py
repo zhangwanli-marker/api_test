@@ -17,6 +17,7 @@ class TestWework:
     def setup(self):
         self.access = AccessApi()
 
+
     # def test_creat_data(self):
     #     data = [(str(random.randint(0, 99999)), "zhangsan1", \
     #              str(random.randint(13800000000, 13800099999))) for x in range(3)]
@@ -62,7 +63,7 @@ class TestWework:
 
     def test_session(self, token):
         s = Session()
-        s.params = {"params": token, }
+        s.params = {"params": token}
         data = {
             "method": "get",
             "url": "https://qyapi.weixin.qq.com/cgi-bin/user/get",

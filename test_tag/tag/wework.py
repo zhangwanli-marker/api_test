@@ -1,8 +1,8 @@
 #-*-coding:utf-8-*-
-from test_tag.tag.base_tag import BaseApi
+import requests
 
 
-class WeWork(BaseApi):
+class WeWork:
     def get_token(self):
         data = {
             "method": "get",
@@ -12,7 +12,7 @@ class WeWork(BaseApi):
                 "corpsecret": "Q2DM37uRfG6ojcNmkTgjLIrw2e4gmaRsLhbmSQgBi3g"
             }
         }
-        res = self.send_request(data)
+        res = requests.request(**data).json()
         try:
             return res['access_token']
         except Exception as e:
